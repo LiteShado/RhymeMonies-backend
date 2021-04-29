@@ -10,11 +10,13 @@ songRoutes.get('/', songController.getAll)
 
 songRoutes.get('/:id', songController.get)
 
+songRoutes.get('/:id/lyrics', songController.getlyrics)
+
 songRoutes.post('/',songController.create)
 
 songRoutes.put('/:id/edit',songController.update)
 
-songRoutes.post('/:id/lyrics',songController.createlyric)
+songRoutes.post('/lyrics',songController.createlyric)
 
 songRoutes.delete('/:id/',songController.delete)
 

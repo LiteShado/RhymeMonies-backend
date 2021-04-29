@@ -38,13 +38,18 @@ userController.create = async (req, res) => {
 userController.getsongs = async (req,res) => {
 
     try {
-        let songs = await models.song.findOne({
+        let user = await models.user.findOne({
             where: {
                 id: req.headers.authorization
             }
-
         })
-        res.json({songs})
+        console.log(user)
+        if (user === null){
+            res.status(404).json({message:'user not found'})
+            return
+        }
+        const songs = await user.getSongs()
+        res.json({user, songs})
     } catch (error) {
         res.json({error})
     }
@@ -56,7 +61,7 @@ userController.update = async (req,res) => {
     try {
         let user = await models.user.findOne({
             where: {
-                id: req.params.userId
+                id: req.headers.authorization
             }
         })
         let final = await user.update(req.body)
@@ -70,7 +75,7 @@ userController.delete = async(req,res) => {
     try {
         let user = await models.user.findOne({
             where: {
-                id: req.params.id
+                id: req.headers.authorization
             }
         })
         await user.destroy()

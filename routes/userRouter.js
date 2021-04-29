@@ -10,8 +10,8 @@ userRoutes.post('/', userController.create)
 
 userRoutes.get('/songs',userController.getsongs)
 
-userRoutes.put('/:id/edit',userController.update)
+userRoutes.put('/edit',userController.update)
 
-userRoutes.delete('/:id',userController.delete)
+userRoutes.delete('/',userController.delete)
 
 module.exports = userRoutes
