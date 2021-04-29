@@ -1,0 +1,27 @@
+{
+  "name": "rhymemonies-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiteShado/RhymeMonies-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LiteShado/RhymeMonies-backend/issues"
+  },
+  "homepage": "https://github.com/LiteShado/RhymeMonies-backend#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "rowdy-logger": "^1.0.2",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0"
+  }
+}
