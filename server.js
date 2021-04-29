@@ -26,8 +26,8 @@ app.use('/users', userRouter)
 const songRouter = require('./routes/songRouter')
 app.use('/songs', songRouter)
 
-const lyricRouter = require('./routes/lyricRouter')
-app.use('/lyrics', lyricRouter)
+// const lyricRouter = require('./routes/lyricRouter')
+// app.use('/lyrics', lyricRouter)
 
 
 const PORT = process.env.PORT || 3001
