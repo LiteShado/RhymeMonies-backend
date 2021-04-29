@@ -83,21 +83,6 @@ songController.get = async (req,res) => {
     }
 }
 
-songController.update = async (req,res) => {
-
-    try {
-        let song = await models.song.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-        let final = await song.update(req.body)
-        res.json({song, final})
-    } catch (error) {
-        res.json({error})
-    }
-}
-
 songController.delete = async(req,res) => {
     try {
         let song = await models.song.findOne({
