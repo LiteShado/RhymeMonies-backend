@@ -36,15 +36,15 @@ songController.create = async (req, res) => {
 
 songController.createlyric = async (req, res) => {
     try {
-        let user = await models.user.findOne({
+        let song = await models.song.findOne({
             where: {
-                id: req.headers.authorization
+                id: req.params.id
             }
         })
-        const song = await models.song.findOne({
-            song: req.params.id
+        const user = await models.user.findOne({
+            id: req.headers.authorization
         })
-        const lyric = await models.lyric.create({
+        const lyric = await user.createLyric({
             lyric: req.body.lyric
         })
         res.json({ user, song, lyric })
