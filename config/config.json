@@ -5,12 +5,13 @@
     "dialect": "postgres"
   },
   "test": {
-    "database": "database_test",
+    "database": "rhymemonies",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "database": "database_production",
+    "use_env_variable": "DATABASE_URL"
+    "database": "rhymemonies",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

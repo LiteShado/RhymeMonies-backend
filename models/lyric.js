@@ -16,9 +16,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   lyric.init({
-    lyric: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    songId: DataTypes.INTEGER
+    lyric: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER
+    },
+    songId: {
+      type: DataTypes.INTEGER
+    },
   }, {
     sequelize,
     modelName: 'lyric',
