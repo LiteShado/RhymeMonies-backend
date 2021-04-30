@@ -12,7 +12,7 @@ songRoutes.get('/:id', songController.get)
 
 songRoutes.get('/:id/lyrics', songController.getlyrics)
 
-songRoutes.post('/',songController.create)
+songRoutes.post('/new',songController.create)
 
 songRoutes.post('/:id/lyrics',songController.createlyric)
 

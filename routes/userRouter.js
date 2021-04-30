@@ -6,7 +6,7 @@ const userRoutes = express.Router()
 
 userRoutes.get('/', userController.get)
 
-userRoutes.post('/', userController.create)
+userRoutes.post('/new', userController.create)
 
 userRoutes.get('/songs',userController.getsongs)
 
