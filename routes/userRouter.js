@@ -4,11 +4,13 @@ const express = require('express')
 const userRoutes = express.Router()
 
 
-userRoutes.get('/', userController.get)
+userRoutes.post('/', userController.get)
 
 userRoutes.post('/new', userController.create)
 
 userRoutes.get('/songs',userController.getsongs)
+
+userRoutes.get('/profile',userController.profile)
 
 userRoutes.put('/edit',userController.update)
 

@@ -11,6 +11,7 @@ userController.get = async (req, res) => {
         })
         if(user.password === req.body.password){
             res.json({message: 'login successful', user: user})
+            // res.json({id: user.id, name: user.name})
           }else{
             res.status(401)
             res.json({error:'incorrect password'})
@@ -50,6 +51,24 @@ userController.getsongs = async (req,res) => {
         }
         const songs = await user.getSongs()
         res.json({user, songs})
+    } catch (error) {
+        res.json({error})
+    }
+}
+userController.profile = async (req,res) => {
+
+    try {
+        let user = await models.user.findOne({
+            where: {
+                id: req.headers.authorization
+            }
+        })
+        console.log(user)
+        if (user === null){
+            res.status(404).json({message:'user not found'})
+            return
+        }
+        res.json({user})
     } catch (error) {
         res.json({error})
     }
