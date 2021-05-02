@@ -28,6 +28,7 @@ songController.create = async (req, res) => {
             title: req.body.title,
             genre: req.body.genre
         })
+        // const userId = user
         res.json({ user, song })
     } catch (error) {
         res.status(400).json({ error: error.message })
