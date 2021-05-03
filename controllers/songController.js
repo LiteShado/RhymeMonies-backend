@@ -29,9 +29,10 @@ songController.create = async (req, res) => {
             genre: req.body.genre
         })
         // const userId = user
-        res.json({ user, song })
+        res.json({  user, song })
     } catch (error) {
         res.status(400).json({ error: error.message })
+        console.log(error)
     }
 }
 
