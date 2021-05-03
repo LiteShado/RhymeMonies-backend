@@ -1,4 +1,6 @@
 const models = require('../models')
+var jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const userController = {}
 
@@ -9,27 +11,33 @@ userController.get = async (req, res) => {
                 email: req.body.email
               }
         })
-        if(user.password === req.body.password){
-            res.json({message: 'login successful', user: user})
-            // res.json({id: user.id, name: user.name})
-          }else{
-            res.status(401)
-            res.json({error:'incorrect password'})
-          }
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+            const encryptedId = jwt.sign({ userId: user.id }, process.env.JWT_SECRET)
 
+            res.json({ message: 'login successful', userId: encryptedId, user })
+          } else {
+            res.status(401).json({ error: 'login failed' })
+          }
+        } catch (error) {
+          console.log(error)
+          res.status(400).json({ error: 'login failed' })
+        }
 }
 
 userController.create = async (req, res) => {
     try {
-        const user = await models.user.create({
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10)
+        let user = await models.user.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: hashedPassword
         })
-        res.json({ user })
+        const encryptedId = jwt.sign({userId: user.id}, process.env.JWT_SECRET)
+        res.json({
+            message:"done",
+            user: user,
+            userId: encryptedId,
+        })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -39,9 +47,12 @@ userController.create = async (req, res) => {
 userController.getsongs = async (req,res) => {
 
     try {
+        const encryptedId = req.headers.authorization
+        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
         let user = await models.user.findOne({
             where: {
-                id: req.headers.authorization
+                id: decryptedId.authorization
             }
         })
         console.log(user)
@@ -58,11 +69,12 @@ userController.getsongs = async (req,res) => {
 userController.profile = async (req,res) => {
 
     try {
-        let user = await models.user.findOne({
-            where: {
-                id: req.headers.authorization
-            }
-        })
+        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
+        const user = await models.user.findOne({
+        where: {
+            id: decryptedId.userId
+      }
+    })
         console.log(user)
         if (user === null){
             res.status(404).json({message:'user not found'})
@@ -78,9 +90,11 @@ userController.profile = async (req,res) => {
 userController.update = async (req,res) => {
 
     try {
+        const encryptedId = req.headers.authorization
+        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
         let user = await models.user.findOne({
             where: {
-                id: req.headers.authorization
+                id: decryptedId.authorization
             }
         })
         let final = await user.update(req.body)
@@ -98,9 +112,38 @@ userController.delete = async(req,res) => {
             }
         })
         await user.destroy()
-        res.json({ message: 'user deleted', user})
+
+        const songs = await user.getSongs()
+
+        for(let i=0 ; songs.length ; i++){
+            await songs[i].destroy()
+        }
+
+        const lyrics = await user.getLyrics()
+
+        for(let i=0 ; lyrics.length ; i++){
+            await length[i].destroy()
+        }
+
+        res.json({ message: 'user deleted', user, songs, lyrics})
     } catch (error) {
         res.json({error})
+    }
+}
+
+
+userController.authCheck = async (req,res) => {
+    try {
+        const encryptedId = req.headers.authorization
+        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+        const user = await model.user.findOne({
+        where: {
+            id: decryptedId.userId
+        }
+    })
+    res.json({user: user.id})
+    } catch (error) {
+        res.json({message: 'not verified'})
     }
 }
 

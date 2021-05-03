@@ -1,4 +1,7 @@
 const models = require('../models')
+var jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
 
 const songController = {}
 
@@ -7,30 +10,52 @@ songController.getAll = async (req, res) => {
         let song = await models.song.findAll()
         res.json(song)
         res.status(200)
+
     } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
+    res.status(400).json({ error: error.message })
+}
+
 }
 
 songController.create = async (req, res) => {
     try {
-        const user = await models.user.findOne({
-          where: {
-            id: req.body.id
-          }
-        })
-        console.log(user)
-        if (user === null){
-        res.status(404).json({message:'user not found'})
-        return
-      }
-        const song = await user.createSong({
-            title: req.body.title,
-            genre: req.body.genre,
-            id: req.body.id
-        })
+    //     const user = await models.user.findOne({
+    //       where: {
+    //         id: req.body.id
+    //       }
+    //     })
+    //     console.log(user)
+    //     if (user === null){
+    //     res.status(404).json({message:'user not found'})
+    //     return
+    //   }
+
+    const encryptedId = req.headers.authorization
+    const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
+    let user = await models.user.findOne({
+        where: {
+            id: decryptedId.userId
+        }
+    })
+
+    const song = await user.createSong({
+        title: req.body.title,
+        genre: req.body.genre,
+        id: req.body.id
+    })
+
+    console.log(encryptedId)
+    console.log(process.env)
+    console.log(jwt)
+
+    // let res = await user.createSong(song)
+
+    // let createSong = await models.song.findAll()
+
+
         // const userId = user
-        res.json({  user, song })
+        res.json({song})
     } catch (error) {
         res.status(400).json({ error: error.message })
         console.log(error)
@@ -39,18 +64,31 @@ songController.create = async (req, res) => {
 
 songController.createlyric = async (req, res) => {
     try {
+
+        const encryptedId = req.headers.authorization
+            const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+            console.log(decryptedId.userId)
+
+        let user = await models.user.findOne({
+                where: {
+                    id: decryptedId.userId
+                }
+        })
+
+        let lyric = await model.lyric.create({
+            lyric: req.body.lyric
+        })
+        user.AddLyric(lyric)
+
         let song = await models.song.findOne({
             where: {
                 id: req.params.id
             }
         })
-        const user = await models.user.findOne({
-            id: req.headers.authorization
-        })
-        const lyric = await user.createLyric({
-            lyric: req.body.lyric
-        })
-        res.json({ user, song, lyric })
+        let final = await song.AddLyric(lyric)
+            res.json({
+                final
+            })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -88,16 +126,24 @@ songController.get = async (req,res) => {
 
 songController.delete = async(req,res) => {
     try {
-        let song = await models.song.findOne({
+        let user = await models.user.findOne({
             where: {
-                id: req.params.id
+                id: req.headers.authorization
             }
         })
+
+        let song = await models.song.findOne({
+                where: {
+                    id: req.params.id
+                }
+        })
+
         await song.destroy()
-        res.json({ message: 'song deleted', song})
-    } catch (error) {
-        res.json({error})
-    }
+        res.json({message: 'song deleted', user, song})
+
+        } catch (error) {
+            res.json({error})
+        }
 }
 
 
