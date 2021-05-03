@@ -23,8 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     genre: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     userId: {
       type: DataTypes.INTEGER

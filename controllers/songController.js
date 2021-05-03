@@ -16,7 +16,7 @@ songController.create = async (req, res) => {
     try {
         const user = await models.user.findOne({
           where: {
-            id: req.headers.authorization
+            id: req.body.id
           }
         })
         console.log(user)
@@ -26,7 +26,8 @@ songController.create = async (req, res) => {
       }
         const song = await user.createSong({
             title: req.body.title,
-            genre: req.body.genre
+            genre: req.body.genre,
+            id: req.body.id
         })
         // const userId = user
         res.json({  user, song })
