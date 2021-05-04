@@ -51,15 +51,23 @@ userController.create = async (req, res) => {
 userController.getsongs = async (req,res) => {
 
     try {
-        const encryptedId = req.headers.authorization
-        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+        // const encryptedId = req.headers.authorization
+        // const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
+        const id = localStorage.getItem('userId', userId)
 
         let user = await models.user.findOne({
             where: {
-                id: decryptedId.authorization
+                id: id
             }
         })
-        console.log(user)
+        const song = await models.song.findAll({
+            where: {
+                userId: id
+            }
+        })
+
+        console.log(user, song)
         if (user === null){
             res.status(404).json({message:'user not found'})
             return
