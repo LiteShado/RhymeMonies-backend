@@ -4,15 +4,16 @@
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
-  "test": {
-    "database": "rhymemonies",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
+
   "production": {
     "use_env_variable": "DATABASE_URL",
-    "database": "rhymemonies",
+    "dialect": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
-  }
-}
+    "dialectOptions": {
+        "ssl": {
+        "require": true,
+             "rejectUnauthorized": false
+           }
+         }
+       }
+     }
