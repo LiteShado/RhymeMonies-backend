@@ -2,6 +2,9 @@ const models = require('../models')
 var jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+require('dotenv').config()
+
+
 
 const songController = {}
 

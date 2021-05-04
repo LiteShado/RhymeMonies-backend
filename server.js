@@ -8,28 +8,12 @@ const routesReport = rowdy.begin(app)
 
 require('dotenv').config()
 
-app.use(express.json())
-app.use(require('cors')())
-
-// const models = require('./models')
-
 const morgan = require('morgan')
+
 app.use(morgan('tiny'))
 
-// ROUTES
-
-app.get('/', (req, res) => {
-    res.send('root')
-})
-
-
-
-
-const userRouter = require('./routes/userRouter')
-app.use('/users', userRouter)
-
-const songRouter = require('./routes/songRouter')
-app.use('/songs', songRouter)
+app.use(express.json())
+app.use(require('cors')())
 
 const lookupUser = async (req, res, next) => {
     try {
@@ -53,6 +37,22 @@ const lookupUser = async (req, res, next) => {
 }
 
 app.use(lookupUser)
+
+const models = require('./models')
+
+
+// ROUTES
+
+app.get('/', (req, res) => {
+    res.send('root')
+})
+
+const userRouter = require('./routes/userRouter')
+app.use('/users', userRouter)
+
+const songRouter = require('./routes/songRouter')
+app.use('/songs', songRouter)
+
 
 const PORT = process.env.PORT || 3001
 

@@ -2,6 +2,9 @@ const models = require('../models')
 var jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+require('dotenv').config()
+
+
 const userController = {}
 
 userController.get = async (req, res) => {
@@ -67,8 +70,16 @@ userController.getsongs = async (req,res) => {
     }
 }
 userController.profile = async (req,res) => {
-
     try {
+        const encryptedId = jwt.sign({userId: user.id}, process.env.JWT_SECRET)
+        res.json({
+            message:"done",
+            user: user,
+            userId: encryptedId,
+        })
+
+///////May delete encryptedId code
+
         const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
         const user = await models.user.findOne({
         where: {
