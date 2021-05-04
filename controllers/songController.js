@@ -24,10 +24,9 @@ songController.getsongs = async (req,res) => {
 
     try {
         const id = localStorage.getItem('userId', userId)
-
         let user = await models.user.findOne({
             where: {
-                id: id
+                id: req.headers.authorization
             }
         })
         const song = await models.song.findAll({
@@ -43,7 +42,7 @@ songController.getsongs = async (req,res) => {
         }
 
     } catch (error) {
-        
+
         res.status(400).json({ error: error.message })
 
     }
