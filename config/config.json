@@ -6,6 +6,7 @@
   },
 
   "production": {
+    "database": "rhymemonies",
     "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
     "host": "127.0.0.1",
