@@ -37,17 +37,16 @@ lyricController.create = async (req, res) => {
         })
 
         user.addLyric(lyric)
+
         let song = await models.song.findOne({
             where: {
                 id: req.params.id
             }
         })
         let final = await song.addLyric(lyric)
-        res.json({
-            final, song, user
-        })
+
         // const userId = user
-        res.json({  message: "nice", user, lyric, song })
+        res.json({ final })
     } catch (error) {
         res.status(400).json({ error: error.message })
         console.log(error)
@@ -63,9 +62,13 @@ lyricController.get = async (req, res) => {
             }
         })
 
-        let lyrics = await models.lyric.findAll()
-        
-        res.json({song, lyrics})
+        let lyrics = await models.lyric.findAll({
+            where: {
+                songId: req.params.id
+            }
+        })
+
+        res.json({lyrics, song})
     } catch (error) {
         res.json({error})
     }
