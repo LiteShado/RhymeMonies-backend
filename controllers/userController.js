@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 require('dotenv').config()
 
 
+
 const userController = {}
 
 userController.get = async (req, res) => {
@@ -63,6 +64,7 @@ userController.getsongs = async (req,res) => {
             res.status(404).json({message:'user not found'})
             return
         }
+
         const songs = await user.getSongs()
         res.json({user, songs})
     } catch (error) {

@@ -22,35 +22,42 @@ songController.getAll = async (req, res) => {
 
 songController.create = async (req, res) => {
     try {
-    //     const user = await models.user.findOne({
-    //       where: {
-    //         id: req.body.id
-    //       }
-    //     })
+
+        const user = await models.user.findOne({
+          where: {
+            id: req.body.id
+          }
+        })
     //     console.log(user)
     //     if (user === null){
     //     res.status(404).json({message:'user not found'})
     //     return
     //   }
 
-    const encryptedId = req.headers.authorization
-    const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+    // const encryptedId = jwt.sign({userId: user.id}, process.env.JWT_SECRET)
 
-    let user = await models.user.findOne({
-        where: {
-            id: decryptedId.userId
-        }
-    })
+    ////////////
+
+    // const encryptedId = req.headers.authorization
+
+
+    // const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
+    // let user = await models.user.findOne({
+    //     where: {
+    //         id: decryptedId.userId
+    //     }
+    // })
 
     const song = await user.createSong({
         title: req.body.title,
-        genre: req.body.genre,
-        id: req.body.id
+        genre: req.body.genre
+        // id: req.body.id
     })
 
-    console.log(encryptedId)
-    console.log(process.env)
-    console.log(jwt)
+    // console.log(encryptedId)
+    // console.log(process.env)
+    // console.log(jwt)
 
     // let res = await user.createSong(song)
 
@@ -59,6 +66,7 @@ songController.create = async (req, res) => {
 
         // const userId = user
         res.json({song})
+        console.log(song)
     } catch (error) {
         res.status(400).json({ error: error.message })
         console.log(error)
@@ -67,7 +75,6 @@ songController.create = async (req, res) => {
 
 songController.createlyric = async (req, res) => {
     try {
-
         const encryptedId = req.headers.authorization
             const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
             console.log(decryptedId.userId)

@@ -6,6 +6,9 @@ const axios = require('axios')
 const rowdy = require ('rowdy-logger')
 const routesReport = rowdy.begin(app)
 
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
 require('dotenv').config()
 
 const morgan = require('morgan')
