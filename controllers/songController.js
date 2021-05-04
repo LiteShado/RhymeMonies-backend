@@ -75,30 +75,37 @@ songController.create = async (req, res) => {
 
 songController.createlyric = async (req, res) => {
     try {
-        const encryptedId = req.headers.authorization
-            const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
-            console.log(decryptedId.userId)
+        // const encryptedId = req.headers.authorization.id
+        //     const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+        //     console.log(decryptedId.userId)
 
-        let user = await models.user.findOne({
-                where: {
-                    id: decryptedId.userId
-                }
-        })
+        // let user = await models.user.findOne({
+        //         where: {
+        //             id: decryptedId.userId
+        //         }
+        // })
 
-        let lyric = await model.lyric.create({
+        const user = await models.user.findOne({
+            where: {
+              id: req.body.id
+            }
+          })
+
+        let lyric = await user.createlyric({
             lyric: req.body.lyric
         })
-        user.AddLyric(lyric)
+        // user.AddLyric(lyric)
 
         let song = await models.song.findOne({
             where: {
-                id: req.params.id
+                id: req.body.idd
             }
         })
-        let final = await song.AddLyric(lyric)
-            res.json({
-                final
-            })
+        // let final = await song.AddLyric(lyric)
+        //     res.json({
+        //         final
+        //     })
+        res.json({message: "nice", song, lyric})
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
