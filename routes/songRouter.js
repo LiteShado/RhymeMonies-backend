@@ -4,7 +4,6 @@ const express = require('express')
 
 const songRoutes = express.Router()
 
-// songRoutes.get('/', songController.get)
 
 songRoutes.get('/', songController.getAll)
 
