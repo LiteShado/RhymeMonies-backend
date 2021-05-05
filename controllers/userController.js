@@ -119,13 +119,25 @@ userController.update = async (req,res) => {
     }
 }
 
-userController.delete = async(req,res) => {
+userController.find = async (req,res) => {
+
     try {
-        let user = await models.user.findOne({
-            where: {
-                email: req.body.email
-            }
+        const user = await models.user.findOne({
+            where:{
+                id: req.params.id
+              }
         })
+        res.json({user})
+    } catch (error) {
+        res.json({error})
+    }
+}
+
+userController.delete = async(req,res) => {
+    console.log(req.headers)
+    try {
+        let user = req.user
+        
         await user.destroy()
 
         const songs = await user.getSongs()
@@ -142,6 +154,7 @@ userController.delete = async(req,res) => {
 
         res.json({ message: 'user deleted', user, songs, lyrics})
     } catch (error) {
+        console.log(error)
         res.json({error})
     }
 }

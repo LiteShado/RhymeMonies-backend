@@ -12,6 +12,8 @@ userRoutes.get('/songs',userController.getsongs)
 
 userRoutes.get('/profile',userController.profile)
 
+userRoutes.get('/find/:id',userController.find)
+
 userRoutes.put('/edit',userController.update)
 
 userRoutes.get('/authcheck', userController.authCheck)
