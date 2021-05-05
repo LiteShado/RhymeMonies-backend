@@ -106,12 +106,10 @@ userController.profile = async (req,res) => {
 userController.update = async (req,res) => {
 
     try {
-        const encryptedId = req.headers.authorization
-        const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
-        let user = await models.user.findOne({
-            where: {
-                id: decryptedId.authorization
-            }
+        const user = await models.user.findOne({
+            where:{
+                email: req.body.email
+              }
         })
         let final = await user.update(req.body)
         res.json({user, final})
