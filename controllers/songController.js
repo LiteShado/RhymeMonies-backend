@@ -49,13 +49,14 @@ songController.getsongs = async (req,res) => {
 }
 
 songController.create = async (req, res) => {
-    try {
 
+    try {
+        // const userId = localStorage.getItem('userId', userId)
         const user = await models.user.findOne({
           where: {
             id: req.body.id
-          }
-        })
+        }
+    })
     //     console.log(user)
     //     if (user === null){
     //     res.status(404).json({message:'user not found'})
