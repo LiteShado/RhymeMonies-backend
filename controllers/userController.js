@@ -4,8 +4,6 @@ const bcrypt = require('bcrypt')
 
 require('dotenv').config()
 
-
-
 const userController = {}
 
 userController.get = async (req, res) => {
@@ -80,30 +78,27 @@ userController.getsongs = async (req,res) => {
     }
 }
 userController.profile = async (req,res) => {
-    try {
-        const encryptedId = jwt.sign({userId: user.id}, process.env.JWT_SECRET)
-        res.json({
-            message:"done",
-            user: user,
-            userId: encryptedId,
+    try{
+        const id = localStorage.getItem('userId', userId)
+        // const encryptedId = req.headers.authorization
+        // const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+        // res.json({id})
+        const user = await models.user.findOne({
+            where: {
+                id: id
+            }
         })
 
-///////May delete encryptedId code
+        console.log(id)
 
-        const decryptedId = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
-        const user = await models.user.findOne({
-        where: {
-            id: decryptedId.userId
-      }
-    })
-        console.log(user)
-        if (user === null){
-            res.status(404).json({message:'user not found'})
-            return
-        }
-        res.json({user})
-    } catch (error) {
-        res.json({error})
+        res.json({
+            user
+        })
+    }
+    catch (error) {
+        res.json({
+            error
+        })
     }
 }
 
