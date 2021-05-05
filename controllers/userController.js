@@ -12,7 +12,8 @@ userController.get = async (req, res) => {
             where:{
                 email: req.body.email
               }
-        })
+            })
+        // res.json({ message: "kinda"})
         if (bcrypt.compareSync(req.body.password, user.password)) {
             const encryptedId = jwt.sign({ userId: user.id }, process.env.JWT_SECRET)
 
@@ -22,7 +23,7 @@ userController.get = async (req, res) => {
           }
         } catch (error) {
           console.log(error)
-          res.status(400).json({ error: 'login failed' })
+          res.status(400).json({ error: 'login failed two' })
         }
 }
 
@@ -122,7 +123,7 @@ userController.delete = async(req,res) => {
     try {
         let user = await models.user.findOne({
             where: {
-                id: req.headers.authorization
+                email: req.body.email
             }
         })
         await user.destroy()

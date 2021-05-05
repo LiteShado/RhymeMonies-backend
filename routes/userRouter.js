@@ -16,6 +16,6 @@ userRoutes.put('/edit',userController.update)
 
 userRoutes.get('/authcheck', userController.authCheck)
 
-userRoutes.delete('/',userController.delete)
+userRoutes.delete('/delete',userController.delete)
 
 module.exports = userRoutes
