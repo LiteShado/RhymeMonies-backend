@@ -9,7 +9,7 @@ songRoutes.get('/', songController.getAll)
 
 songRoutes.get('/:id', songController.get)
 
-songRoutes.get('/user', songController.getsongs)
+songRoutes.get('/list', songController.getsongs)
 
 songRoutes.get('/:id/lyrics', songController.getlyrics)
 

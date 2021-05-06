@@ -24,18 +24,19 @@ songController.getsongs = async (req,res) => {
 
     try {
         const id = localStorage.getItem('userId', userId)
-        let user = await models.user.findOne({
-            where: {
-                id: req.headers.authorization
-            }
-        })
+        // let user = await models.user.findOne({
+        //     where: {
+        //         id: id
+        //     }
+        // })
         const song = await models.song.findAll({
             where: {
                 userId: id
             }
         })
 
-        console.log(user, song)
+        res.json({song})
+
         if (user === null){
             res.status(404).json({message:'user not found'})
             return

@@ -137,7 +137,7 @@ userController.delete = async(req,res) => {
     console.log(req.headers)
     try {
         let user = req.user
-        
+
         await user.destroy()
 
         const songs = await user.getSongs()
